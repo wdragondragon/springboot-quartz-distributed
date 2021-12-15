@@ -1,0 +1,36 @@
+server:
+  port: 9090
+  servlet:
+    encoding:
+      force: true
+      enabled: true
+      charset: utf-8
+
+spring:
+  application:
+    name: engine-default
+  profiles:
+    active: dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-enums-package: org.example.quartz.master.constant
+  mapper-locations: classpath:/mappers/*Mapper.xml
+  type-aliases-package: org.example.quartz.master.entity.*
+  global-config:
+    db-config: #实体类字段上加上@TableLogic注解
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+
+logging:
+  config: classpath:logback.xml
+  level:
+    org.quartz: DEBUG
+    org.example: DEBUG
+

@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://remotehost:3308/quartz?autoReconnect=true&serverTimezone=GMT%2B8
+    username: root
+    password: 951753
+  quartz:
+    auto-startup: true
+    jdbc:
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: ${spring.application.name}
+            instanceId: AUTO
+            instanceIdGenerator:
+              class: org.example.quartz.parent.config.QuartzInstanceIdGenerator
+            skipUpdateCheck: true
+            batchTriggerAcquisitionMaxCount: 1
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 3
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: false
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            useProperties: true
+            misfireThreshold: 20000
+            tablePrefix: QRTZ_
+            isClustered: true
+            clusterCheckinInterval: 7500
+            dataSource: quartzDataSource
+            acquireTriggersWithinLock: true
+          dataSource:
+            quartzDataSource:
+              driver: com.mysql.cj.jdbc.Driver
+              provider: hikaricp
+              URL: jdbc:mysql://remotehost:3308/quartz?autoReconnect=true&serverTimezone=GMT%2B8
+              user: root
+              password: 951753
+              maxConnections: 10
+          plugin:
+            shutdownHook:
+              class: org.quartz.plugins.management.ShutdownHookPlugin
+              cleanShutdown: TRUE
