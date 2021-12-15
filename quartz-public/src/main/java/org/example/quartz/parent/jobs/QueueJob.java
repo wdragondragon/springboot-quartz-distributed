@@ -32,6 +32,6 @@ public class QueueJob extends QuartzJobBean {
         });
         QueueJobInfo queueJobInfo = new QueueJobInfo();
         queueJobInfo.setParams(params);
-        JobBlockingQueue.getInstance().add(queueJobInfo);
+        JobBlockingQueue.getInstance().put(queueJobInfo);
     }
 }
