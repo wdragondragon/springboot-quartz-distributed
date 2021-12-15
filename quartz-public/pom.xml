@@ -17,8 +17,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <lombok.version>1.18.2</lombok.version>
-        <mybatis-plus-starter.veriosn>3.4.1</mybatis-plus-starter.veriosn>
-        <mybatis-typehandlers.version>1.0.1</mybatis-typehandlers.version>
     </properties>
 
     <dependencies>
@@ -73,18 +71,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus-starter.veriosn}</version>
-        </dependency>
-        <!--mybatis不支持java8的时间类型，但是mybatis-plus自动生成的类型是java8的，所以需要引入这个-->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-typehandlers-jsr310</artifactId>
-            <version>${mybatis-typehandlers.version}</version>
         </dependency>
     </dependencies>
 </project>
