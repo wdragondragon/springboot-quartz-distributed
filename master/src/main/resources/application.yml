@@ -8,7 +8,7 @@ server:
 
 spring:
   application:
-    name: engine-default
+    name: engine-master
   profiles:
     active: dev
   jackson:
@@ -31,6 +31,6 @@ mybatis-plus:
 logging:
   config: classpath:logback.xml
   level:
-    org.quartz: DEBUG
+    org.quartz: INFO
     org.example: DEBUG
 

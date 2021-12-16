@@ -3,8 +3,8 @@ package org.example.quartz.master.config;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.example.quartz.master.entity.Engine;
-import org.example.quartz.master.mapper.EngineMapper;
+import org.example.quartz.master.entity.EngineGroup;
+import org.example.quartz.master.mapper.EngineGroupMapper;
 import org.example.quartz.parent.utils.QuartzUtil;
 import org.example.quartz.parent.utils.SchedulerManager;
 import org.example.quartz.parent.utils.SpringContextHolder;
@@ -16,7 +16,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -40,6 +42,11 @@ public class QuartzConfig {
     }
 
 
+    @Bean("bmScheduler")
+    public Scheduler scheduler(SchedulerFactoryBean schedulerFactoryBean) {
+        return schedulerFactoryBean.getScheduler();
+    }
+
     @Bean
     @ConfigurationProperties(prefix = "spring.quartz.properties")
     public Properties quartzProperties() {
@@ -47,27 +54,12 @@ public class QuartzConfig {
     }
 
     @Bean
-    public ApplicationRunner process(Properties quartzProperties, EngineMapper engineMapper) {
+    public ApplicationRunner process(QuartzUtil quartzUtil, SchedulerRegister schedulerRegister) {
         return args -> {
-            String master = System.getProperty("quartz.master");
-            if (!"true".equals(master)) {
-                return;
-            }
-            List<Engine> engines = engineMapper.selectList(
-                    new LambdaQueryWrapper<Engine>().select(Engine::getEngineGroup));
-            Set<String> engineGroups = engines.stream()
-                    .map(Engine::getEngineGroup)
-                    .collect(Collectors.toSet());
-            for (String group : engineGroups) {
-                Properties properties = (Properties) quartzProperties.clone();
-                properties.put("org.quartz.scheduler.instanceName", group);
-                SchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
-                Scheduler scheduler = schedulerFactory.getScheduler();
-                SchedulerManager.register(group, new QuartzUtil(scheduler));
-            }
-            log.info("加载完成，scheduler名单：[{}]", StringUtils.join(SchedulerManager.allScheduler(), ','));
+            quartzUtil.addJob("check", "master", "0 * * * * ?", SchedulerSyncJob.class, new HashMap<>());
+            log.info("启动master定时检查作业调度");
+            schedulerRegister.load();
         };
     }
-
 }
 

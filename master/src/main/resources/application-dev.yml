@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://remotehost:3308/quartz?autoReconnect=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://10.194.188.93:3306/quartz?autoReconnect=true&serverTimezone=GMT%2B8
     username: root
-    password: 951753
+    password: bmsoft
   quartz:
     auto-startup: true
     jdbc:
@@ -26,7 +26,7 @@ spring:
           jobStore:
             class: org.quartz.impl.jdbcjobstore.JobStoreTX
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-            useProperties: true
+            useProperties: false
             misfireThreshold: 20000
             tablePrefix: QRTZ_
             isClustered: true
@@ -37,9 +37,9 @@ spring:
             quartzDataSource:
               driver: com.mysql.cj.jdbc.Driver
               provider: hikaricp
-              URL: jdbc:mysql://remotehost:3308/quartz?autoReconnect=true&serverTimezone=GMT%2B8
+              URL: jdbc:mysql://10.194.188.93:3306/quartz?autoReconnect=true&serverTimezone=GMT%2B8
               user: root
-              password: 951753
+              password: bmsoft
               maxConnections: 10
           plugin:
             shutdownHook:

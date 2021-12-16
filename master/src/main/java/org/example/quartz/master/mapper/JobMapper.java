@@ -2,8 +2,12 @@ package org.example.quartz.master.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.example.quartz.master.entity.Engine;
+import org.example.quartz.master.entity.EngineGroup;
+import org.example.quartz.master.entity.Job;
+import org.example.quartz.parent.entity.JobInfo;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Author JDragon
@@ -14,5 +18,6 @@ import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
-public interface EngineMapper extends BaseMapper<Engine> {
+public interface JobMapper extends BaseMapper<Job> {
+    List<JobInfo> getRunningJob();
 }

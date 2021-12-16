@@ -45,8 +45,8 @@ public class QuartzUtil {
      */
     private final Scheduler scheduler;
 
-    public QuartzUtil(Scheduler scheduler){
-        this.scheduler = scheduler;
+    public QuartzUtil(Scheduler bmScheduler) {
+        this.scheduler = bmScheduler;
     }
 
     public void addJob(String jobName, String group,
@@ -66,6 +66,9 @@ public class QuartzUtil {
                        Date startTime, Date endTime,
                        String cronExpress, Class<? extends Job> jobClass, Map<String, Object> params) throws ObjectAlreadyExistsException {
         try {
+            if (existJob(jobName, group)) {
+                return;
+            }
             //添加触发调度名称
             TriggerKey triggerKey = TriggerKey.triggerKey(jobName, group);
             //判断时间表达式是否有效
@@ -118,6 +121,9 @@ public class QuartzUtil {
                        Date startTime, Date endTime, Integer interval, DateBuilder.IntervalUnit unit,
                        Class<? extends Job> jobClass, Map<String, Object> params) throws ObjectAlreadyExistsException {
         try {
+            if (existJob(jobName, group)) {
+                return;
+            }
             //添加触发调度名称
             TriggerKey triggerKey = TriggerKey.triggerKey(jobName, group);
 
@@ -217,6 +223,9 @@ public class QuartzUtil {
      * @param jobGroup group
      */
     public boolean deleteJob(String jobName, String jobGroup) throws SchedulerException {
+        if (!existJob(jobName, jobGroup)) {
+            return true;
+        }
         JobKey jobKey = new JobKey(jobName, jobGroup);
         JobDetail jobDetail = scheduler.getJobDetail(jobKey);
         if (jobDetail == null) {
@@ -326,4 +335,22 @@ public class QuartzUtil {
             throw new RuntimeException("根据组获取quartz任务列表失败");
         }
     }
+
+    public boolean existJob(String jobName, String group) {
+        try {
+            JobDetail jobDetail = scheduler.getJobDetail(new JobKey(jobName, group));
+            if (jobDetail == null) {
+                log.info("不存在作业[{}.{}]", group, jobName);
+                return false;
+            } else {
+                log.info("作业存在[{}.{}]", group, jobName);
+                return true;
+            }
+        } catch (SchedulerException e) {
+            log.error("", e);
+            return false;
+        }
+    }
+
+
 }

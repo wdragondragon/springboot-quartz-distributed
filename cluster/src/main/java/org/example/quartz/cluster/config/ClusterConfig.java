@@ -18,7 +18,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 @EnableScheduling
 @Configuration
 public class ClusterConfig {
-    @Bean
+    @Bean("bmScheduler")
     public Scheduler scheduler(SchedulerFactoryBean schedulerFactoryBean) {
         return schedulerFactoryBean.getScheduler();
     }

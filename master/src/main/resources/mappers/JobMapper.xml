@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.quartz.master.mapper.JobMapper">
+    <select id="getRunningJob" resultType="org.example.quartz.parent.entity.JobInfo">
+        SELECT
+            dcj.id,
+            dcj.`name`,
+            dceg.group_name engineGroupName,
+            dcj.cron
+        FROM
+            dc_collect_job dcj
+                JOIN dc_collect_engine_group dceg ON dcj.engine_group = dceg.id
+        WHERE
+            run_status = 1
+    </select>
+</mapper>
