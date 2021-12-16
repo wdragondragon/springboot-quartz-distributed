@@ -8,7 +8,8 @@
 
 
 
-![image-20211216144955281](https://gitee.com/wdragondragon/picture-bed/raw/master/imgs/202112161450404.png)
+![master推送作业流程](https://gitee.com/wdragondragon/picture-bed/raw/master/imgs/202112161450404.png)
 
 
 
+![master同步shceduler流程](https://gitee.com/wdragondragon/picture-bed/raw/master/imgs/202112161503611.png)
