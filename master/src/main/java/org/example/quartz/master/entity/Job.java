@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+
 /**
  * @Author JDragon
  * @Date 2021.12.16 上午 9:51
@@ -17,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("dc_collect_job")
-public class Job extends Model<Job> {
+public class Job extends Model<Job> implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
